@@ -56,6 +56,12 @@ After it you should have as your prompt something like this:
 With the environment active, install the base data science and development packages:
 
 ```bash
+conda end update -f environment.yml 
+```
+
+or do it manually for some fun:
+
+```bash
 conda install -c conda-forge numpy pandas matplotlib jupyterlab ipykernel
 conda install -c conda-forge pytest black ruff mypy
 ```
