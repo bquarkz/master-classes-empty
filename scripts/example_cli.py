@@ -1,10 +1,9 @@
 #!/usr/bin/env python
-"""Exemplo de script CLI que usa o pacote local."""
 import argparse
 from unilab import hello, mean
 
 def main():
-    parser = argparse.ArgumentParser(description="Exemplo de CLI para o projeto.")
+    parser = argparse.ArgumentParser(description="CLI example using the lib unilab.")
     parser.add_argument("--name", default="Nilton")
     parser.add_argument("--nums", nargs="*", type=float, default=[1,2,3])
     args = parser.parse_args()
