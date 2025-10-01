@@ -1,4 +1,4 @@
-# 🧪 Development Environment Setup — Master's Project (Python 3.12 + Conda + Jupyter)
+# 🧪 Development Environment Setup — Master's Project (Python 3.12 + Conda + venv + Jupyter)
 
 This repository provides clear instructions to set up a clean and reproducible development environment using **Conda**, **Python 3.12**, and **JupyterLab**. The structure is ideal for academic or research projects that use multiple notebooks and a reusable local Python library.
 
@@ -25,13 +25,28 @@ conda --version
 Create a new environment named `master-classes` with **Python 3.12**:
 
 ```bash
-conda create -n master-classes python=3.12
+conda env create -f environment.yml
 ```
 
 Activate the environment:
 
 ```bash
 conda activate master-classes
+```
+
+When conda activated, create the venv using:
+```bash
+python -m venv .venv
+```
+
+And activate it:
+```bash
+source .venv/bin/activate
+```
+
+After it you should have as your prompt something like this:
+```bash
+(.venv) (master-classes) user@bla %
 ```
 
 ---
@@ -72,7 +87,7 @@ inside JupyterLab's kernel selector.
 If your project has a `pyproject.toml` and source code in `src/` (e.g., `src/unilab/`), install it in **editable mode**:
 
 ```bash
-pip install --no-deps -e .
+python -m pip install --no-deps -e .
 ```
 
 > ⚠️ Using `--no-deps` avoids dependency conflicts with packages already managed by Conda.
@@ -90,7 +105,7 @@ conda install -c conda-forge scikit-learn
 👉 If it's a **pure Python library** from PyPI:
 
 ```bash
-pip install package-name
+python -m pip install package-name
 ```
 
 After installing new packages, you can update your environment file for reproducibility:
@@ -106,7 +121,7 @@ conda env export --from-history > environment.yml
 This project uses **pytest** for testing. Run tests with:
 
 ```bash
-pytest -q
+python -m pytest -q
 ```
 
 ---
