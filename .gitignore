@@ -3,5 +3,8 @@ jupyter-kernel
 .idea
 .venv
 .virtual_documents
+.ipynb_checkpoints
 **/__pycache__/**
 **/**-checkpoint.ipynb
+**/**.egg-info
+**/**.egg-info/**
