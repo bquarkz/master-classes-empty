@@ -1,16 +1,24 @@
-# 🧪 Development Environment Setup — Master's Project (Python 3.12 + Conda + venv + Jupyter)
+# 🧪 Development Environment Setup — Master's Project (Python 3.12 + Conda + Jupyter)
 
-This repository provides clear instructions to set up a clean and reproducible development environment using **Conda**, **Python 3.12**, and **JupyterLab**. The structure is ideal for academic or research projects that use multiple notebooks and a reusable local Python library.
+This repository provides clear instructions to set up a clean and reproducible development environment using **Conda**, **Python 3.12**, and **JupyterLab**.
+The structure is ideal for academic or research projects that use multiple notebooks and a reusable local Python library.
+The environment is also ready to run tests with **pytest**.
+
+The structure allows us to have a clean separation between the frontend (JupyterLab) and the backend (Python library).
+Where Conda manages heavy dependencies (precompiled, like PyTorch, TensorFlow, scikit-learn, etc.), pip manages internal libraries (backend)
+and can manage pure-Python packages as well. Unless you really know what you are doing, my recommendation is to use Conda for all packages
+other than your backend. Doing that, you avoid dependency conflicts and keep your environment clean. Use pip only for your local library
+(or for pure-Python packages when you understand the risks).
 
 ---
 
 ## 🧰 Prerequisites
-
+py
 Before starting, make sure you have:
 
-* [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Mamba](https://mamba.readthedocs.io/en/latest/installation.html) installed (Mamba is recommended 🚀)
-* Git (optional but recommended)
+* Anaconda 3
 * macOS / Linux / Windows with a functional terminal
+* Git
 
 Verify Conda installation:
 
@@ -34,81 +42,95 @@ Activate the environment:
 conda activate master-classes
 ```
 
-When conda activated, create the venv using:
+Remember to activate the environment every time you open a new terminal.
+Your operating system has a Python installation by default; if you start changing packages and versions globally, you could cause problems.
+That is why we use a local virtual environment (Conda).
+
+As an exercise, after running the commands above, you can check the Python version:
 ```bash
-python -m venv .venv
+python --version
+```
+It should be 3.12.x. And by using:
+```bash
+which python
+```
+you should see the path to the Python executable inside the Conda env, for example:
+```aiignore
+/opt/homebrew/anaconda3/envs/master-classes/bin/python
 ```
 
-And activate it:
+After activation your shell prompt should look like:
 ```bash
-source .venv/bin/activate
+(master-classes) user@bla %
 ```
 
-After it you should have as your prompt something like this:
-```bash
-(.venv) (master-classes) user@bla %
-```
+Important points:
+1. Use a Conda environment created from `environment.yml`.
+2. Install your backend code (see item 4) using pip while the Conda env is active.
+3. Register the Jupyter kernel from that Conda env (see item 3) so notebooks use the same environment.
+4. Let Conda manage dependencies; use pip only for your local backend (prefer `--no-deps`).
+5. Work always with the Conda env activated when developing or running notebooks.
+6. In notebooks, select the kernel created from the Conda env so it sees your egg-link and the Conda site-packages.
+7. Egg-links will reflect code changes without reinstallation (use `%autoreload` in notebooks if helpful).
 
 ---
 
 ## 📦 2. Install essential packages
 
 With the environment active, install the base data science and development packages:
-
 ```bash
-conda end update -f environment.yml 
+conda env update -f environment.yml 
 ```
 
-or do it manually for some fun:
-
+or install manually using:
 ```bash
 conda install -c conda-forge numpy pandas matplotlib jupyterlab ipykernel
 conda install -c conda-forge pytest black ruff mypy
 ```
+The `-c conda-forge` flag is optional, we already set up the channel in the `environment.yml` file to always use the `conda-forge` channel.
 
 > 💡 We recommend using the `conda-forge` channel, especially on macOS (Apple Silicon), because it provides more up-to-date and optimized binary builds.
 
 ---
 
-## 📓 3. Register the environment as a Jupyter kernel
+## 📓 3. Register the environment as a Jupyter kernel (frontend)
 
 To make the environment appear in Jupyter Notebook/Lab:
-
 ```bash
 python -m ipykernel install --user --name master-classes --display-name "Master Classes (Python 3.12)"
 ```
 
 After this, you'll see the kernel:
-
 ```
 Python 3.12 (master-classes)
 ```
-
-inside JupyterLab's kernel selector.
+Inside JupyterLab's kernel selector. Be aware to be using that kernel to be able to access your backend code.
 
 ---
 
-## 🧱 4. Install the local project library
+## 🧱 4. Install the local project library (backend)
 
 If your project has a `pyproject.toml` and source code in `src/` (e.g., `src/unilab/`), install it in **editable mode**:
 
 ```bash
-python -m pip install --no-deps -e .
+python -m pip install --no-deps --editable .
 ```
 
-> ⚠️ Using `--no-deps` avoids dependency conflicts with packages already managed by Conda.
+Notes:
+- Use `--no-deps` to avoid pip trying to install or change dependencies that you manage with Conda.
+- The `--editable` (`-e`) mode installs an egg-link pointing to your local source directory, so edits are immediately visible in notebooks.
 
 ---
 
-## ➕ 5. Add new libraries
+## ➕ 5. Adding new packages
 
-👉 If the library is **heavy or has binary dependencies** (e.g., scikit-learn, PyTorch, TensorFlow):
+👉 If the package is **heavy or has binary dependencies** (e.g., scikit-learn, PyTorch, TensorFlow):
 
 ```bash
 conda install -c conda-forge scikit-learn
 ```
 
-👉 If it's a **pure Python library** from PyPI:
+👉 If it's a **pure Python library** from PyPI (use with care):
 
 ```bash
 python -m pip install package-name
@@ -117,7 +139,7 @@ python -m pip install package-name
 After installing new packages, you can update your environment file for reproducibility:
 
 ```bash
-conda env export --from-history > environment.yml
+conda env export --from-history > after_environment.yml
 ```
 
 ---
@@ -166,13 +188,14 @@ python -m pytest -q
 
 ## ✨ Quick example
 
+On your notebook:
 ```python
 %load_ext autoreload
 %autoreload 2
 
 from unilab import hello, mean
 
-hello("Nilton")
+hello("Your name here")
 mean([10, 20, 30])
 ```
 
