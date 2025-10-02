@@ -8,3 +8,5 @@ jupyter-kernel
 **/**-checkpoint.ipynb
 **/**.egg-info
 **/**.egg-info/**
+data
+reports
