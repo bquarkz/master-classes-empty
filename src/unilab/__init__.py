@@ -1,6 +1,9 @@
-from .utils import hello, mean
+from .utils import hello, mean, count_words, count_vowels_consonants, evaluate_expression
 
 __all__ = [
     "hello",
-    "mean"
+    "mean",
+    "count_words",
+    "count_vowels_consonants",
+    "evaluate_expression"
 ]
