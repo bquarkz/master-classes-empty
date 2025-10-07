@@ -5,13 +5,15 @@ from .utils import (
     , count_vowels_consonants
     , evaluate_expression
     , draw_expression
+    , random_numbers
 )
 
 __all__ = [
-    "hello",
-    "mean",
-    "count_words",
-    "count_vowels_consonants",
-    "evaluate_expression",
-    "draw_expression"
+    "hello"
+    , "mean"
+    , "count_words"
+    , "count_vowels_consonants"
+    , "evaluate_expression"
+    , "draw_expression"
+    , "random_numbers"
 ]

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import ast
 import operator
+import random
+
 import unicodedata as udata
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -70,18 +72,18 @@ def _eval_node(node: ast.expr) -> Any:
 
 def labefy(node: ast.AST) -> str:
     opType = type(node.op)
-    if (opType == ast.Add):
+    if opType == ast.Add:
         return "+"
-    elif (opType == ast.Sub):
+    elif opType == ast.Sub:
         return "-"
-    elif (opType == ast.Mult):
+    elif opType == ast.Mult:
         return "*"
-    elif (opType == ast.Div):
+    elif opType == ast.Div:
         return "/"
     else:
         return "?"
 
-def ast_to_graph(node: ast.AST, g: nx.DiGraph, parent: str = None, counter: list = None) -> str:
+def ast_to_graph(node: ast.expr, g: nx.DiGraph, parent: str = None, counter: list = None) -> str:
     if counter is None:
         counter = [0]
     node_id = f"n{counter[0]}"
@@ -126,3 +128,9 @@ def draw_expression(expr_src: str, figsize: Tuple[int,int]=(8,6)):
     nx.draw_networkx_labels(g, pos, labels, font_size=10)
     plt.axis("off")
     plt.show()
+
+def random_numbers(size: int = 30, min_val: int = 0, max_val: int = 100) -> list:
+    s = set([random.randint(min_val, max_val) for _ in range(size)])
+    while len(s) < size:
+        s.add(random.randint(min_val, max_val))
+    return list(s)
