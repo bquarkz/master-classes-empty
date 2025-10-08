@@ -17,7 +17,7 @@ Welcome! 👋 These exercises are designed for **beginners to intermediate learn
 
 Focus: **CP01–CP05** (Intro, numbers & strings, collections, control flow, basic functions)
 
-**Suggested main notebook:** `week01_fundamentals.ipynb`
+**Suggested main notebook:** `wk01_fundamentals.ipynb`
 
 1. **Hello, AI! (Warm‑up)**
    Print a personalized greeting with today’s date/time. Use `datetime` and f‑strings.
@@ -65,7 +65,7 @@ Focus: **CP01–CP05** (Intro, numbers & strings, collections, control flow, bas
 
 Focus: **CP06–CP07 & CP10** (custom functions, exceptions, lambda/map/filter)
 
-**Suggested main notebook:** `week02_functions_and_fp.ipynb`
+**Suggested main notebook:** `w02_functions_and_fp.ipynb`
 
 1. **Reusable Stats Functions**
    Write functions `mean(xs)`, `stdev(xs)`, and `zscores(xs)` (returning a list). Add docstrings and simple doctests.
@@ -113,7 +113,7 @@ Focus: **CP06–CP07 & CP10** (custom functions, exceptions, lambda/map/filter)
 
 Focus: **CP08–CP09 & revisit CP10** (decorators, datetime, lambda/map usage in pipelines)
 
-**Suggested main notebook:** `week03_decorators_datetime_ml.ipynb`
+**Suggested main notebook:** `w03_decorators_datetime_ml.ipynb`
 
 1. **Datetime Basics**
    Format today’s date, parse date strings, compute deltas (days between two dates), and add/subtract timedeltas.
