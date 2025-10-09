@@ -18,6 +18,32 @@ def mean(values: Iterable[float]) -> float:
         raise ValueError("Empty list.")
     return sum(values) / len(values)
 
+def median(values: Iterable[float]) -> float:
+    values = list(values)
+    if not values:
+        raise ValueError("Empty list.")
+    values = sorted(values)
+    n = len(values)
+    mid = n // 2
+    if n % 2 == 0:
+        return (values[mid - 1] + values[mid]) / 2
+    else:
+        return values[mid]
+
+def variance(values: Iterable[float], sample: bool = False) -> float:
+    values = list(values)
+    if not values:
+        raise ValueError("Empty list.")
+    n = len(values)
+    m = mean(values)
+    ss = [(x - m) ** 2 for x in values]
+    if n == 1:
+        return 0.0
+    if sample:
+        return sum(ss) / (n - 1)
+    else:
+        return sum(ss) / n
+
 def count_words(text: str) -> int:
     return text.strip().count(" ") + 1
 
@@ -129,8 +155,11 @@ def draw_expression(expr_src: str, figsize: Tuple[int,int]=(8,6)):
     plt.axis("off")
     plt.show()
 
-def random_numbers(size: int = 30, min_val: int = 0, max_val: int = 100) -> list:
-    s = set([random.randint(min_val, max_val) for _ in range(size)])
+def random_numbers_unique(size: int = 30, min_val: int = 0, max_val: int = 100) -> list:
+    s = set(random_numbers(size, min_val, max_val))
     while len(s) < size:
         s.add(random.randint(min_val, max_val))
     return list(s)
+
+def random_numbers(size: int = 30, min_val: int = 0, max_val: int = 100) -> list:
+    return [random.randint(min_val, max_val) for _ in range(size)]

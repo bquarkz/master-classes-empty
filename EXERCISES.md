@@ -56,7 +56,7 @@ Focus: **CP01–CP05** (Intro, numbers & strings, collections, control flow, bas
    *Notebook:* main week notebook.
 
 10. **Mini Data Exploration (Histogram)**
-    Generate 200 random floats in `[0,1)`, compute mean/median/variance, and plot a histogram with `matplotlib`.
+    Generate 200 random floats in `[0,1]`, compute mean/median/variance, and plot a histogram with `matplotlib`.
     **Dedicated notebook required:** `w01_ex10_exploration.ipynb`
 
 ---
