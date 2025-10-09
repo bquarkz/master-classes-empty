@@ -79,7 +79,7 @@ Important points:
 
 With the environment active, install the base data science and development packages:
 ```bash
-conda env update -f environment.yml 
+conda env create -f environment.yml 
 ```
 
 or install manually using:
