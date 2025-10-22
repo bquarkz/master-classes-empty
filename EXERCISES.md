@@ -84,7 +84,7 @@ Focus: **CP06–CP07 & CP10** (custom functions, exceptions, lambda/map/filter)
    *Notebook:* main week notebook.
 
 5. **Map/Filter Mini‑Pipeline**
-   Given a list of numbers, square them (`map`) and keep only those > 50 (`filter`). Show the before/after lists.
+   Given a list of numbers, square them (`map`) and keep only those > 40 (`filter`). Show the before/after lists.
    *Notebook:* main week notebook.
 
 6. **Functional Text Cleaning**
