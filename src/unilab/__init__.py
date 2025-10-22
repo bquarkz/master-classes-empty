@@ -3,6 +3,8 @@ from .utils import (
     , mean
     , median
     , variance
+    , standard_deviation
+    , zscores
     , count_words
     , count_vowels_consonants
     , evaluate_expression
@@ -16,6 +18,8 @@ __all__ = [
     , "mean"
     , "median"
     , "variance"
+    , "standard_deviation"
+    , "zscores"
     , "count_words"
     , "count_vowels_consonants"
     , "evaluate_expression"
