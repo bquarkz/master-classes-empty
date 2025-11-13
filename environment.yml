@@ -36,10 +36,14 @@ dependencies:
   - shap=0.46.0
   - eli5=0.13.0
   - ydata-profiling>=4.6,<5
+  - imbalanced-learn=0.10.1
   - pytest
   - black
   - ruff
   - mypy
+  - pygraphviz
+  - conda-forge::yfinance
+  - conda-forge::imbalanced-learn
   - pip:
     - ipykernel==6.29.5 # keep if you must pin pip-installed ipykernel (avoid duplicating)
     - ydata-profiling>=4.6,<5 # if only available via pip
