@@ -10,3 +10,9 @@ jupyter-kernel
 **/**.egg-info/**
 data
 reports
+**/debug/
+**/debug/**
+
+# Large local datasets (excluded from GitHub)
+/notebooks/classes/m9/amazon_polarity_test.csv
+/notebooks/classes/m9/amazon_polarity_train.csv

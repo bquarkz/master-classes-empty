@@ -1,0 +1,110 @@
+M10 PMLS - Assignment 2
+Developing API For Excel
+Note on tooling / Alternative used
+
+------------------------------------------------------------
+WHY THIS ALTERNATIVE
+------------------------------------------------------------
+The original assignment asks to connect Excel (Power Query, Get Data -> From Web) to the
+deployed API, and add a Form Control button that refreshes the data.
+
+I do not have access to Windows or to a licensed/installed copy of Excel (desktop or Mac), so I
+could not produce the requested .xlsm file. Excel Online was considered, but it does not support
+VBA/macros, so the "button that refreshes" requirement could not be met there either.
+
+The closest equivalent I found, using only free and browser-based tools, is Google Sheets +
+Apps Script:
+  - Google Sheets' "Get Data" / custom function plays the same role as Power Query's
+    "Get Data -> From Web" (calling the API and loading the JSON response into a table).
+  - Apps Script (Google's JavaScript-based macro language) plays the same role as VBA: it can be
+    attached to a drawing/shape on the sheet, so clicking it refreshes the data - the same
+    behavior requested for the Excel Form Control button.
+
+This file documents, step by step, how I built and used that equivalent.
+
+------------------------------------------------------------
+STEP 1: Deploy the API
+------------------------------------------------------------
+1. Code: assignment_M10U2.py (same folder), which exposes a single flat table at:
+       GET /campaign-analysis
+   returning one row per segment value (segment_type, segment_value, customers, responders,
+   response_rate_%), which is the ideal shape for both Power Query and Google Sheets.
+2. Added fastapi and uvicorn to requirements.txt, deployed on Render with:
+       Build command : pip install -r requirements.txt
+       Start command : uvicorn assignment_M10U2:app --host 0.0.0.0 --port $PORT
+3. Verified the live endpoint responds with the JSON table:
+       https://<your-app-name>.onrender.com/campaign-analysis
+
+------------------------------------------------------------
+STEP 2: Create the Google Sheet
+------------------------------------------------------------
+1. Went to sheets.google.com -> Blank spreadsheet.
+2. Renamed it "M10 Assignment 2 - Skin Clinic Campaign Analysis".
+3. Named the first sheet "CampaignAnalysis" (this is where the table will be loaded).
+
+------------------------------------------------------------
+STEP 3: Add the Apps Script (equivalent to the VBA macro)
+------------------------------------------------------------
+1. In the sheet: Extensions -> Apps Script.
+2. Deleted the placeholder code and pasted the function below, which calls the API, parses the
+   JSON (Apps Script does this natively, no JsonConverter.bas needed like in VBA) and writes
+   headers + rows into the sheet:
+
+   function refreshCampaignAnalysis() {
+     var url = "https://<your-app-name>.onrender.com/campaign-analysis";
+     var response = UrlFetchApp.fetch(url);
+     var data = JSON.parse(response.getContentText());
+
+     var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("CampaignAnalysis");
+     sheet.clear();
+
+     var headers = ["Segment Type", "Segment Value", "Customers", "Responders", "Response Rate (%)"];
+     sheet.appendRow(headers);
+
+     data.forEach(function (row) {
+       sheet.appendRow([
+         row.segment_type,
+         row.segment_value,
+         row.customers,
+         row.responders,
+         row["response_rate_%"]
+       ]);
+     });
+
+     SpreadsheetApp.getUi().alert("Campaign analysis updated!");
+   }
+
+3. Saved the project as "CampaignAnalysisScript".
+4. Ran it once from the Apps Script editor (Run -> refreshCampaignAnalysis) to authorize the
+   script's permission to call an external URL and edit the sheet (Google asks for this
+   authorization only on the first run).
+
+------------------------------------------------------------
+STEP 4: Add the refresh button
+------------------------------------------------------------
+1. Back in the sheet: Insert -> Drawing.
+2. Drew a simple rectangle with the text "Refresh Campaign Analysis", then clicked Save and Close
+   to drop it onto the sheet (this is the Google Sheets equivalent of an Excel Form Control
+   button).
+3. Clicked the drawing once to select it, then clicked the 3-dot menu on its corner -> Assign
+   script -> typed "refreshCampaignAnalysis" -> OK.
+
+------------------------------------------------------------
+STEP 5: Use it
+------------------------------------------------------------
+1. Clicking the button calls the deployed API and reloads the table with the latest
+   gender / age group / purchase-last-quarter / product-usage response-rate analysis.
+2. The sheet was shared with "Anyone with the link - Viewer" so it can be opened without a
+   Google account being required to request access.
+
+------------------------------------------------------------
+MAPPING BACK TO THE ORIGINAL (EXCEL) REQUIREMENTS
+------------------------------------------------------------
+Excel requirement                              -> Google Sheets equivalent used
+------------------------------------------------  ---------------------------------------------
+Power Query: Get Data -> From Web              -> UrlFetchApp.fetch(url) inside Apps Script
+Expand JSON records into columns               -> JSON.parse() + sheet.appendRow() per record
+Developer tab -> Insert -> Button (Form Control) -> Insert -> Drawing (shape/button)
+Assign Macro to the button                     -> Assign script to the drawing
+Click button -> table refreshes                -> Click drawing -> refreshCampaignAnalysis() runs
+
